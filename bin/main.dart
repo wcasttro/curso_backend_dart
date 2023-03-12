@@ -3,6 +3,7 @@ import 'apis/login_api.dart';
 import 'package:shelf/shelf.dart';
 
 import 'infra/custom_server.dart';
+import 'infra/middleware_interception.dart';
 import 'models/noticia_model.dart';
 import 'services/noticias_service.dart';
 import 'services/noticias_service_impl.dart';
@@ -17,7 +18,7 @@ Future<void> main(List<String> arguments) async {
     .add(NoticiasApi(NoticiasServiceImpl()).handler) 
     .handler;
 
-  final handler = Pipeline().addMiddleware(logRequests()).addHandler(cascadeHandler);
+  final handler = Pipeline().addMiddleware(logRequests()).addMiddleware(MiddlewareInterception().meddleware) .addHandler(cascadeHandler);
 
   await CustomServer().initialize(
     address: await CustomEnv.get<String>(key: 'server_address'),

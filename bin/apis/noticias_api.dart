@@ -20,7 +20,7 @@ class NoticiasApi{
     router.get('/blog/noticias', (Request request){
      List<NoticiaModel> noticias =  _service.findAll();
      List<Map> noticiasMap = noticias.map((e) => e.toMap()).toList();
-      return Response.ok(jsonEncode(noticiasMap), headers: {"content-type":"application/json"});
+      return Response.ok(jsonEncode(noticiasMap));
     });
 
     // criar noticia
