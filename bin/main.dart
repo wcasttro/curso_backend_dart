@@ -1,8 +1,10 @@
-import 'api/blog_api.dart';
-import 'api/login_api.dart';
+import 'apis/noticias_api.dart';
+import 'apis/login_api.dart';
 import 'package:shelf/shelf.dart';
 
 import 'infra/custom_server.dart';
+import 'services/noticias_service.dart';
+import 'services/noticias_service_impl.dart';
 import 'utils/custom_env.dart';
 
 Future<void> main(List<String> arguments) async {
@@ -11,7 +13,7 @@ Future<void> main(List<String> arguments) async {
   // adicionando varios handers
   var cascadeHandler = Cascade()
     .add(LoginApi().handler)
-    .add(BlogApi().handler) 
+    .add(NoticiasApi(NoticiasServiceImpl()).handler) 
     .handler;
 
   final handler = Pipeline().addMiddleware(logRequests()).addHandler(cascadeHandler);

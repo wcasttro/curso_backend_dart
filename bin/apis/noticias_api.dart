@@ -1,18 +1,27 @@
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf/shelf.dart';
 
+import '../services/noticias_service.dart';
 
-class BlogApi{
+
+class NoticiasApi{
+
+  final NoticiasService _service;
+
+  NoticiasApi(this._service);
+
   Handler get handler{
     Router router = Router();
 
     // pegar lista de noticias
     router.get('/blog/noticias', (Request request){
+      _service.findAll();
       return Response.ok('Primeira noticia');
     });
 
     // criar noticia
     router.post('/blog/noticia', (Request request){
+      _service.save('save');
       return Response.ok('Adicionando noticia');
     });
 
