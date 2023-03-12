@@ -3,6 +3,7 @@ import 'apis/login_api.dart';
 import 'package:shelf/shelf.dart';
 
 import 'infra/custom_server.dart';
+import 'models/noticia_model.dart';
 import 'services/noticias_service.dart';
 import 'services/noticias_service_impl.dart';
 import 'utils/custom_env.dart';

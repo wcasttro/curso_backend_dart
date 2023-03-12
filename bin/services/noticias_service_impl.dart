@@ -1,28 +1,46 @@
+import '../models/noticia_model.dart';
 import 'noticias_service.dart';
+import '../utils/list_extendion.dart';
+
+
+
 
 class NoticiasServiceImpl implements NoticiasService{
+
+  List<NoticiaModel> _fakeDB = [];
+
   @override
   bool delete(int id) {
-    // TODO: implement delete
-    throw UnimplementedError();
+   _fakeDB.removeWhere((element) => element.id == id);
+   return true;
   }
 
   @override
-  List findAll() {
-    // TODO: implement findAll
-    throw UnimplementedError();
+  List<NoticiaModel> findAll() {
+    return _fakeDB;
   }
 
   @override
   findOne(int id) {
-    // TODO: implement findOne
-    throw UnimplementedError();
+   _fakeDB.firstWhere((element) => element.id == id);
   }
 
   @override
-  bool save(save) {
-    // TODO: implement save
-    throw UnimplementedError();
+  bool save(NoticiaModel value) {
+
+    NoticiaModel? model = _fakeDB.fistWhereOrNull((element) => element.id == value.id);
+
+    if(model == null){
+      _fakeDB.add(value);
+      
+    }else{
+      final index = _fakeDB.indexOf(model);
+      _fakeDB[index] = value;
+      
+
+    }
+
+   return true;
   }
 
 }
