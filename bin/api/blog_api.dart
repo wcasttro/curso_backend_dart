@@ -6,7 +6,7 @@ class BlogApi{
   Handler get handler{
     Router router = Router();
 
-    router.get('blog/noticias', (Request request){
+    router.get('/blog/noticias', (Request request){
       return Response.ok('Primeira noticia');
 
     });
