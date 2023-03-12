@@ -4,6 +4,7 @@ import 'package:shelf/shelf.dart';
 
 import 'infra/custom_server.dart';
 import 'infra/middleware_interception.dart';
+import 'infra/security/security_service_impl.dart';
 import 'models/noticia_model.dart';
 import 'services/noticias_service.dart';
 import 'services/noticias_service_impl.dart';
@@ -14,11 +15,14 @@ Future<void> main(List<String> arguments) async {
 
   // adicionando varios handers
   var cascadeHandler = Cascade()
-    .add(LoginApi().handler)
+    .add(LoginApi(SecurityServiceImpl()).handler)
     .add(NoticiasApi(NoticiasServiceImpl()).handler) 
     .handler;
 
-  final handler = Pipeline().addMiddleware(logRequests()).addMiddleware(MiddlewareInterception().meddleware) .addHandler(cascadeHandler);
+  final handler = Pipeline()
+    .addMiddleware(MiddlewareInterception().meddleware)
+    .addMiddleware(logRequests())
+    .addHandler(cascadeHandler);
 
   await CustomServer().initialize(
     address: await CustomEnv.get<String>(key: 'server_address'),
