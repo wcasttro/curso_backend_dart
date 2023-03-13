@@ -5,16 +5,18 @@ import 'package:shelf/shelf.dart';
 
 import '../models/noticia_model.dart';
 import '../services/noticias_service.dart';
+import 'api.dart';
 
 
-class NoticiasApi{
+class NoticiasApi extends Api{
 
   final NoticiasService _service;
 
   NoticiasApi(this._service);
 
-  Handler get handler{
-    Router router = Router();
+  @override
+  Handler getHandler({List<Middleware> middlewares = const []}) {
+   Router router = Router();
 
     // pegar lista de noticias
     router.get('/blog/noticias', (Request request){
@@ -43,8 +45,6 @@ class NoticiasApi{
       return Response.ok('Deletando noticia');
     });
 
-
-
-    return router;
+    return createHandler(router: router, middlewares: middlewares);
   }
 }

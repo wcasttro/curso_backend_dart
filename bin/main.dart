@@ -4,6 +4,7 @@ import 'package:shelf/shelf.dart';
 
 import 'infra/custom_server.dart';
 import 'infra/middleware_interception.dart';
+import 'infra/security/security_service.dart';
 import 'infra/security/security_service_impl.dart';
 import 'models/noticia_model.dart';
 import 'services/noticias_service.dart';
@@ -13,17 +14,17 @@ import 'utils/custom_env.dart';
 Future<void> main(List<String> arguments) async {
   CustomEnv.fromFile('.env-dev');
 
+  SecurityService _securityService = SecurityServiceImpl();
+
   // adicionando varios handers
   var cascadeHandler = Cascade()
-    .add(LoginApi(SecurityServiceImpl()).handler)
-    .add(NoticiasApi(NoticiasServiceImpl()).handler) 
+    .add(LoginApi(_securityService).getHandler())
+    .add(NoticiasApi(NoticiasServiceImpl()).getHandler(middlewares: [_securityService.authorization, _securityService.verifyJwt])) 
     .handler;
 
   final handler = Pipeline()
     .addMiddleware(logRequests())
     .addMiddleware(MiddlewareInterception().meddleware)
-    .addMiddleware(SecurityServiceImpl().authorization)
-    .addMiddleware(SecurityServiceImpl().verifyJwt)
     .addHandler(cascadeHandler);
 
   await CustomServer().initialize(
