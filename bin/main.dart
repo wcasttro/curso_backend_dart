@@ -20,8 +20,10 @@ Future<void> main(List<String> arguments) async {
     .handler;
 
   final handler = Pipeline()
-    .addMiddleware(MiddlewareInterception().meddleware)
     .addMiddleware(logRequests())
+    .addMiddleware(MiddlewareInterception().meddleware)
+    .addMiddleware(SecurityServiceImpl().authorization)
+    .addMiddleware(SecurityServiceImpl().verifyJwt)
     .addHandler(cascadeHandler);
 
   await CustomServer().initialize(

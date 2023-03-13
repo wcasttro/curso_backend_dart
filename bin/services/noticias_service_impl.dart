@@ -31,13 +31,10 @@ class NoticiasServiceImpl implements NoticiasService{
     NoticiaModel? model = _fakeDB.fistWhereOrNull((element) => element.id == value.id);
 
     if(model == null){
-      _fakeDB.add(value);
-      
+      _fakeDB.add(value);      
     }else{
       final index = _fakeDB.indexOf(model);
-      _fakeDB[index] = value;
-      
-
+      _fakeDB[index] = value;    
     }
 
    return true;
