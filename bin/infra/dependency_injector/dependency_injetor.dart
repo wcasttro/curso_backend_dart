@@ -11,7 +11,7 @@ class DependencyInjetor {
   // registrar
   void register<T extends Object>(
     InstanceCreator<T> instance, {
-    bool isSingleton = false,
+    bool isSingleton = true,
   }) {
     _instanceMap[T] = _InstanceGenerator(instance, isSingleton);
   }
@@ -25,6 +25,8 @@ class DependencyInjetor {
     }
     throw Exception('[Error] -> Instance ${T.toString()} not found');
   }
+
+  call<T extends Object>() => get<T>();
 }
 
 class _InstanceGenerator<T> {
